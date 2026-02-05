@@ -975,6 +975,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
                 max={seekMaxSec}
                 step={seekStepSec}
                 value={seekValueSec}
+                aria-label="Seek position"
                 onPointerDownCapture={(e) => e.stopPropagation()}
                 onMouseDownCapture={(e) => e.stopPropagation()}
                 onTouchStartCapture={(e) => e.stopPropagation()}
@@ -1045,6 +1046,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
               min="0"
               max="100"
               value={volumePercent}
+              aria-label="Volume control"
               onPointerDownCapture={(e) => e.stopPropagation()}
               onMouseDownCapture={(e) => e.stopPropagation()}
               onTouchStartCapture={(e) => e.stopPropagation()}
