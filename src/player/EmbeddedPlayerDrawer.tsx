@@ -262,10 +262,10 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
   const clampPlayerScale = useCallback((scale: number) => Math.min(Math.max(scale, 0.6), 1.3), []);
   const playerWrapperRef = useRef<HTMLDivElement | null>(null);
   const miniContainerRef = useRef<HTMLDivElement | null>(null);
-  const miniMargin = 8;
   const getDefaultMiniPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 0, y: 0 };
     // place bottom-right with margin
+    const miniMargin = 8;
     return { x: window.innerWidth / 2 - miniMargin - 130, y: -(window.innerHeight / 2 - miniMargin - 90) };
   }, []);
   const [isCompact, setIsCompact] = useState(false);
