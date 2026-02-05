@@ -116,6 +116,7 @@ export function Footer() {
               <input
                 type="email"
                 placeholder="Enter your email"
+                aria-label="Email address for newsletter"
                 className="flex-1 px-4 py-3 bg-[#1A1A2E] border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00F5FF] transition-all"
               />
               <motion.button

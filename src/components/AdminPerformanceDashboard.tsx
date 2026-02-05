@@ -4,7 +4,7 @@
  * Displays automated performance test results with charts and analytics.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -115,14 +115,14 @@ export default function AdminPerformanceDashboard() {
 
   useEffect(() => {
     loadPerformanceData();
-  }, []);
+  }, [loadPerformanceData]);
 
   const toNumber = (value: unknown): number => {
     const n = typeof value === 'string' ? Number(value) : value;
     return Number.isFinite(n as number) ? (n as number) : 0;
   };
 
-  const sanitizeTrends = (rows: PerformanceTrend[] | null | undefined): PerformanceTrend[] => {
+  const sanitizeTrends = useCallback((rows: PerformanceTrend[] | null | undefined): PerformanceTrend[] => {
     if (!rows) return [];
     return rows
       .filter((row) => row && typeof row.test_name === 'string' && row.test_name.trim().length > 0)
@@ -135,9 +135,9 @@ export default function AdminPerformanceDashboard() {
         pass_rate: toNumber(row.pass_rate),
       }))
       .filter((row) => Number.isFinite(row.avg_duration) && Number.isFinite(row.max_duration));
-  };
+  }, []);
 
-  const sanitizeHistory = (rows: TestHistory[] | null | undefined): TestHistory[] => {
+  const sanitizeHistory = useCallback((rows: TestHistory[] | null | undefined): TestHistory[] => {
     if (!rows) return [];
     return rows
       .filter((row) => row && typeof row.tested_at === 'string' && row.tested_at.trim().length > 0)
@@ -147,9 +147,9 @@ export default function AdminPerformanceDashboard() {
         threshold_ms: toNumber(row.threshold_ms),
       }))
       .filter((row) => Number.isFinite(row.duration_ms) && Number.isFinite(row.threshold_ms));
-  };
+  }, []);
 
-  const loadPerformanceData = async () => {
+  const loadPerformanceData = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -171,7 +171,7 @@ export default function AdminPerformanceDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sanitizeTrends]);
 
   const loadFeatureHistory = async (featureName: string) => {
     const { data } = await supabase.rpc('get_test_history', {

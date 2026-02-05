@@ -125,7 +125,7 @@ export function TrackCard({
     if (!isActive && isPlaying) {
       handlePause();
     }
-  }, [isActive]);
+  }, [isActive, isPlaying, handlePause]);
 
   // Cleanup on unmount
   useEffect(() => {

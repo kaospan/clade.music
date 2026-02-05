@@ -262,12 +262,12 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
   const clampPlayerScale = useCallback((scale: number) => Math.min(Math.max(scale, 0.6), 1.3), []);
   const playerWrapperRef = useRef<HTMLDivElement | null>(null);
   const miniContainerRef = useRef<HTMLDivElement | null>(null);
-  const miniMargin = 8;
   const getDefaultMiniPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 0, y: 0 };
     // place bottom-right with margin
+    const miniMargin = 8;
     return { x: window.innerWidth / 2 - miniMargin - 130, y: -(window.innerHeight / 2 - miniMargin - 90) };
-  }, [miniMargin]);
+  }, []);
   const [isCompact, setIsCompact] = useState(false);
   const getDefaultCompactPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 0, y: 0 };
@@ -275,7 +275,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
     const width = 420;
     const height = 180;
     return { x: window.innerWidth - width - margin, y: window.innerHeight - height - margin };
-  }, [miniMargin]);
+  }, []);
   const [mainPosition, setMainPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [compactPosition, setCompactPosition] = useState<{ x: number; y: number }>(() => getDefaultCompactPosition());
   const [dragBounds, setDragBounds] = useState({ left: -1000, right: 1000, top: -1000, bottom: 1000 });
@@ -975,6 +975,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
                 max={seekMaxSec}
                 step={seekStepSec}
                 value={seekValueSec}
+                aria-label="Seek position"
                 onPointerDownCapture={(e) => e.stopPropagation()}
                 onMouseDownCapture={(e) => e.stopPropagation()}
                 onTouchStartCapture={(e) => e.stopPropagation()}
@@ -1045,6 +1046,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
               min="0"
               max="100"
               value={volumePercent}
+              aria-label="Volume control"
               onPointerDownCapture={(e) => e.stopPropagation()}
               onMouseDownCapture={(e) => e.stopPropagation()}
               onTouchStartCapture={(e) => e.stopPropagation()}
