@@ -267,7 +267,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
     if (typeof window === 'undefined') return { x: 0, y: 0 };
     // place bottom-right with margin
     return { x: window.innerWidth / 2 - miniMargin - 130, y: -(window.innerHeight / 2 - miniMargin - 90) };
-  }, [miniMargin]);
+  }, []);
   const [isCompact, setIsCompact] = useState(false);
   const getDefaultCompactPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 0, y: 0 };
@@ -275,7 +275,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
     const width = 420;
     const height = 180;
     return { x: window.innerWidth - width - margin, y: window.innerHeight - height - margin };
-  }, [miniMargin]);
+  }, []);
   const [mainPosition, setMainPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [compactPosition, setCompactPosition] = useState<{ x: number; y: number }>(() => getDefaultCompactPosition());
   const [dragBounds, setDragBounds] = useState({ left: -1000, right: 1000, top: -1000, bottom: 1000 });

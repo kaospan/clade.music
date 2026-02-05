@@ -4,7 +4,7 @@
  * Displays automated performance test results with charts and analytics.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -115,7 +115,7 @@ export default function AdminPerformanceDashboard() {
 
   useEffect(() => {
     loadPerformanceData();
-  }, []);
+  }, [loadPerformanceData]);
 
   const toNumber = (value: unknown): number => {
     const n = typeof value === 'string' ? Number(value) : value;
@@ -149,7 +149,7 @@ export default function AdminPerformanceDashboard() {
       .filter((row) => Number.isFinite(row.duration_ms) && Number.isFinite(row.threshold_ms));
   };
 
-  const loadPerformanceData = async () => {
+  const loadPerformanceData = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -171,7 +171,7 @@ export default function AdminPerformanceDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sanitizeTrends]);
 
   const loadFeatureHistory = async (featureName: string) => {
     const { data } = await supabase.rpc('get_test_history', {
