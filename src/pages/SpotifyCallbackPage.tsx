@@ -48,9 +48,6 @@ export default function SpotifyCallbackPage() {
       if (handledRef.current) return; // guard against StrictMode double-invoke
       handledRef.current = true;
       try {
-        console.log('[Spotify Callback] Starting...');
-        console.log('[Spotify Callback] URL params:', Object.fromEntries(searchParams.entries()));
-        
         // Get params from URL
         const code = searchParams.get('code');
         const state = searchParams.get('state');
@@ -63,7 +60,6 @@ export default function SpotifyCallbackPage() {
           consumedCodeKeyRef.current = key;
           const alreadyUsed = localStorage.getItem(key) || sessionStorage.getItem(key);
           if (alreadyUsed) {
-            console.warn('[Spotify Callback] Code already consumed, skipping re-exchange');
             setStatus('success');
             setTimeout(() => navigate('/profile', { replace: true }), 800);
             return;
@@ -75,31 +71,23 @@ export default function SpotifyCallbackPage() {
 
         // Handle Spotify errors
         if (error) {
-          console.error('[Spotify Callback] Spotify error:', error, errorDescription);
           throw new Error(errorDescription || `Spotify authorization failed: ${error}`);
         }
 
         if (!code || !state) {
-          console.error('[Spotify Callback] Missing code or state');
           throw new Error('Missing authorization code or state');
         }
 
         // Verify state matches what we stored
         const storedState = getStoredOAuthState();
-        console.log('[Spotify Callback] Stored state:', storedState?.state?.substring(0, 8) + '...');
-        console.log('[Spotify Callback] Received state:', state?.substring(0, 8) + '...');
         
         if (!storedState || storedState.state !== state) {
-          console.error('[Spotify Callback] State mismatch');
           throw new Error('Invalid state parameter. Please try connecting again.');
         }
 
         if (!user) {
-          console.error('[Spotify Callback] No user logged in');
           throw new Error('You must be logged in to connect Spotify');
         }
-
-        console.log('[Spotify Callback] Exchanging code for tokens...');
         
         // Exchange code for tokens
         const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
@@ -107,8 +95,6 @@ export default function SpotifyCallbackPage() {
         const normalizedBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
         const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI || 
           `${window.location.origin}${normalizedBase}spotify-callback`;
-        
-        console.log('[Spotify Callback] Using redirect URI:', redirectUri);
 
         const tokenResponse = await fetch(SPOTIFY_TOKEN_URL, {
           method: 'POST',
@@ -126,26 +112,19 @@ export default function SpotifyCallbackPage() {
 
         if (!tokenResponse.ok) {
           const errorData = await tokenResponse.json();
-          console.error('[Spotify Callback] Token exchange failed:', errorData);
           throw new Error(errorData.error_description || `Token exchange failed: ${errorData.error}`);
         }
 
-        console.log('[Spotify Callback] Token exchange successful');
         // Strip code/state from the URL to prevent accidental re-use on refresh
         try {
           const cleanUrl = `${window.location.origin}${window.location.pathname}`;
           window.history.replaceState({}, document.title, cleanUrl);
-        } catch (err) {
-          console.warn('[Spotify Callback] Failed to clean URL', err);
+        } catch {
+          // Ignore URL cleanup errors
         }
         const tokens: SpotifyTokenResponse = await tokenResponse.json();
-        console.log(
-          '[Spotify Callback] Token scope:',
-          typeof tokens.scope === 'string' ? tokens.scope : '(missing)'
-        );
 
         let profile: SpotifyUserProfile | null = null;
-        console.log('[Spotify Callback] Fetching Spotify profile...');
         // Get user's Spotify profile (best-effort). Some Spotify apps in dev mode return 403 for non-whitelisted users.
         // We still store tokens so the user can retry/reconnect after fixing Spotify dashboard settings.
         const profileResponse = await fetch('https://api.spotify.com/v1/me', {
@@ -155,8 +134,6 @@ export default function SpotifyCallbackPage() {
         });
 
         if (!profileResponse.ok) {
-          const details = await profileResponse.json().catch(() => null);
-          console.error('[Spotify Callback] Profile fetch failed:', profileResponse.status, details);
           // Continue; store tokens with a placeholder provider_user_id.
         } else {
           profile = await profileResponse.json();
@@ -191,7 +168,6 @@ export default function SpotifyCallbackPage() {
           .upsert(upsertPayload, { onConflict: 'user_id,provider' });
 
         if (upsertError) {
-          console.error('Failed to store Spotify connection:', upsertError);
           throw new Error('Failed to save Spotify connection');
         }
 
@@ -210,9 +186,6 @@ export default function SpotifyCallbackPage() {
         // Clean up OAuth state
         setStatus('success');
         if (!profile) {
-          console.warn(
-            '[Spotify Callback] Connected, but profile fetch failed. This often means the Spotify app is in dev mode and the user is not added as an allowed user in the Spotify dashboard.'
-          );
           setWarningMessage(
             'Connected, but Spotify profile fetch was blocked (403). If your Spotify app is in dev mode, add your account as an allowed user in the Spotify dashboard, then reconnect.'
           );
@@ -224,7 +197,6 @@ export default function SpotifyCallbackPage() {
         }, 2000);
 
       } catch (err) {
-        console.error('Spotify callback error:', err);
         setErrorMessage(err instanceof Error ? err.message : 'Unknown error');
         setStatus('error');
       } finally {
