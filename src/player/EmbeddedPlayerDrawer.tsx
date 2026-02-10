@@ -259,15 +259,15 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
   const playerResizeActiveRef = useRef(false);
   const lastPlayerClientXRef = useRef(0);
   const lastPlayerClientYRef = useRef(0);
+  const miniMargin = 8;
   const clampPlayerScale = useCallback((scale: number) => Math.min(Math.max(scale, 0.6), 1.3), []);
   const playerWrapperRef = useRef<HTMLDivElement | null>(null);
   const miniContainerRef = useRef<HTMLDivElement | null>(null);
   const getDefaultMiniPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 0, y: 0 };
     // place bottom-right with margin
-    const miniMargin = 8;
     return { x: window.innerWidth / 2 - miniMargin - 130, y: -(window.innerHeight / 2 - miniMargin - 90) };
-  }, []);
+  }, [miniMargin]);
   const [isCompact, setIsCompact] = useState(false);
   const getDefaultCompactPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 0, y: 0 };
@@ -975,7 +975,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
                 max={seekMaxSec}
                 step={seekStepSec}
                 value={seekValueSec}
-                aria-label="Seek position"
+                aria-label="Seek"
                 onPointerDownCapture={(e) => e.stopPropagation()}
                 onMouseDownCapture={(e) => e.stopPropagation()}
                 onTouchStartCapture={(e) => e.stopPropagation()}
@@ -1029,7 +1029,6 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
                          [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 
                          [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full 
                          [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-pointer"
-                aria-label="Seek"
               />
             </div>
             <span className="text-[10px] md:text-xs tabular-nums w-12 text-left" aria-label="Total duration">{formatTime(durationSec)}</span>
@@ -1046,7 +1045,7 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
               min="0"
               max="100"
               value={volumePercent}
-              aria-label="Volume control"
+              aria-label="Volume"
               onPointerDownCapture={(e) => e.stopPropagation()}
               onMouseDownCapture={(e) => e.stopPropagation()}
               onTouchStartCapture={(e) => e.stopPropagation()}
@@ -1055,7 +1054,6 @@ export function EmbeddedPlayerDrawer({ onNext, onPrev, canNext, canPrev }: Embed
                        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 
                        [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full 
                        [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-pointer"
-              aria-label="Volume"
             />
 
             {provider === 'spotify' && isSpotifyConnected !== true && (

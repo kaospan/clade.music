@@ -73,6 +73,9 @@ jobs:
           VITE_YOUTUBE_API_KEY: ${{ secrets.VITE_YOUTUBE_API_KEY || vars.VITE_YOUTUBE_API_KEY }}
           VITE_LASTFM_API_KEY: ${{ secrets.VITE_LASTFM_API_KEY || vars.VITE_LASTFM_API_KEY }}
 
+      - name: Disable Jekyll
+        run: echo . > dist/.nojekyll
+
       # Deploy to Vercel (recommended for Vite apps)
       - name: Deploy to Vercel
         if: ${{ vars.DEPLOY_TARGET == 'vercel' }}
@@ -105,6 +108,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
           cname: ${{ vars.CUSTOM_DOMAIN }}
 
   deploy-supabase:

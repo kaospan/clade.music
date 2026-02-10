@@ -1,10 +1,22 @@
 // @ts-nocheck
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/*.supabase.co/**', (route) => route.fulfill({ status: 200, body: '{}' }));
+  await page.route('**open.spotify.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>spotify</body></html>' })
+  );
+  await page.route('**youtube-nocookie.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>youtube</body></html>' })
+  );
+  await page.route('**www.youtube.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>youtube</body></html>' })
+  );
+  await page.goto('/clademusic/__e2e__/player');
+});
+
 test.describe('Universal player z-index dominance', () => {
   test('player must be visually above feed and controls', async ({ page }) => {
-    await page.goto('/clademusic/feed');
-
     await page.waitForSelector('[data-provider="spotify"]');
 
     await page.click('[data-provider="spotify"]');

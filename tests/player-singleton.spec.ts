@@ -7,14 +7,26 @@ const providerSelectors = {
   youtube: '[data-provider="youtube"]',
 };
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/*.supabase.co/**', (route) => route.fulfill({ status: 200, body: '{}' }));
+  await page.route('**open.spotify.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>spotify</body></html>' })
+  );
+  await page.route('**youtube-nocookie.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>youtube</body></html>' })
+  );
+  await page.route('**www.youtube.com/**', (route) =>
+    route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body>youtube</body></html>' })
+  );
+  await page.goto('/clademusic/__e2e__/player');
+});
+
 async function expectSinglePlayer(page) {
   await expect(page.locator(playerLocator)).toHaveCount(1);
 }
 
 test.describe('Universal Player Singleton Enforcement', () => {
   test('only one playback surface exists at all times', async ({ page }) => {
-    await page.goto('/clademusic/feed');
-
     await page.waitForSelector(providerSelectors.spotify);
     await page.waitForSelector(providerSelectors.youtube);
 
