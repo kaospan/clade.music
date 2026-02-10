@@ -14,50 +14,67 @@ export function CladeIcon({ className = "", size = 24 }: CladeIconProps) {
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="0 0 256 256"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      aria-label="Clade logo"
     >
-      {/* Main trunk */}
+      <circle cx="128" cy="128" r="98" stroke="#5B2B82" strokeWidth="12" />
       <path
-        d="M12 20V12"
-        stroke="currentColor"
-        strokeWidth="2"
+        d="M128 198V132"
+        stroke="#6FA57A"
+        strokeWidth="12"
         strokeLinecap="round"
       />
-      
-      {/* First branching (common ancestor level) */}
       <path
-        d="M12 12C12 12 9 10 6 10M12 12C12 12 15 10 18 10"
-        stroke="currentColor"
-        strokeWidth="2"
+        d="M128 132C128 132 100 112 74 112M128 132C128 132 156 112 182 112"
+        stroke="#6FA57A"
+        strokeWidth="12"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      
-      {/* Second branching (species level) */}
       <path
-        d="M6 10V6M18 10V6"
-        stroke="currentColor"
-        strokeWidth="2"
+        d="M74 112V78M182 112V78"
+        stroke="#6FA57A"
+        strokeWidth="12"
         strokeLinecap="round"
       />
-      
-      {/* Leaf nodes (circles representing songs/species) */}
-      <circle cx="6" cy="4" r="2" fill="currentColor" />
-      <circle cx="18" cy="4" r="2" fill="currentColor" />
-      <circle cx="12" cy="20" r="2" fill="currentColor" />
-      
-      {/* Additional branches for complexity */}
       <path
-        d="M6 8C6 8 4 7 3 7M18 8C18 8 20 7 21 7"
-        stroke="currentColor"
-        strokeWidth="1.5"
+        d="M128 118C118 108 104 100 92 98"
+        stroke="#5B2B82"
+        strokeWidth="10"
         strokeLinecap="round"
       />
-      <circle cx="3" cy="6" r="1.5" fill="currentColor" opacity="0.7" />
-      <circle cx="21" cy="6" r="1.5" fill="currentColor" opacity="0.7" />
+      <path
+        d="M128 118C138 108 152 100 164 98"
+        stroke="#5B2B82"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+      <path
+        d="M92 98C78 94 62 92 48 96"
+        stroke="#5B2B82"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+      <path
+        d="M164 98C178 94 194 92 208 96"
+        stroke="#5B2B82"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+      <circle cx="48" cy="96" r="9" fill="#5B2B82" />
+      <circle cx="208" cy="96" r="9" fill="#5B2B82" />
+      <circle cx="74" cy="70" r="10" fill="#6FA57A" />
+      <circle cx="182" cy="70" r="10" fill="#6FA57A" />
+      <circle cx="128" cy="198" r="10" fill="#6FA57A" />
+      <path
+        d="M154 128C154 114 142 104 128 104C114 104 102 114 102 128C102 142 114 152 128 152"
+        stroke="#5B2B82"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -107,57 +124,68 @@ export function CladeLogoAnimated({ className = "", size = 32 }: CladeIconProps)
     <svg
       width={size}
       height={size}
-      viewBox="0 0 32 32"
+      viewBox="0 0 256 256"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      aria-label="Clade logo"
     >
-      <defs>
-        <linearGradient id="cladeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" />
-          <stop offset="100%" stopColor="hsl(var(--accent))" />
-        </linearGradient>
-      </defs>
-      
-      {/* Main evolutionary tree */}
       <g className="animate-pulse-subtle">
+        <circle cx="128" cy="128" r="98" stroke="#5B2B82" strokeWidth="12" />
         <path
-          d="M16 28V16"
-          stroke="url(#cladeGradient)"
-          strokeWidth="2.5"
+          d="M128 198V132"
+          stroke="#6FA57A"
+          strokeWidth="12"
           strokeLinecap="round"
         />
-        
         <path
-          d="M16 16C16 16 11 13 7 13M16 16C16 16 21 13 25 13"
-          stroke="url(#cladeGradient)"
-          strokeWidth="2.5"
+          d="M128 132C128 132 100 112 74 112M128 132C128 132 156 112 182 112"
+          stroke="#6FA57A"
+          strokeWidth="12"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        
         <path
-          d="M7 13V7M25 13V7"
-          stroke="url(#cladeGradient)"
-          strokeWidth="2.5"
+          d="M74 112V78M182 112V78"
+          stroke="#6FA57A"
+          strokeWidth="12"
           strokeLinecap="round"
         />
-        
-        {/* Nodes with gradient */}
-        <circle cx="7" cy="5" r="3" fill="url(#cladeGradient)" />
-        <circle cx="25" cy="5" r="3" fill="url(#cladeGradient)" />
-        <circle cx="16" cy="28" r="3" fill="url(#cladeGradient)" />
-        
-        {/* Extra branches */}
         <path
-          d="M7 10C7 10 4 9 2 9M25 10C25 10 28 9 30 9"
-          stroke="url(#cladeGradient)"
-          strokeWidth="2"
+          d="M128 118C118 108 104 100 92 98"
+          stroke="#5B2B82"
+          strokeWidth="10"
           strokeLinecap="round"
-          opacity="0.6"
         />
-        <circle cx="2" cy="8" r="2" fill="url(#cladeGradient)" opacity="0.7" />
-        <circle cx="30" cy="8" r="2" fill="url(#cladeGradient)" opacity="0.7" />
+        <path
+          d="M128 118C138 108 152 100 164 98"
+          stroke="#5B2B82"
+          strokeWidth="10"
+          strokeLinecap="round"
+        />
+        <path
+          d="M92 98C78 94 62 92 48 96"
+          stroke="#5B2B82"
+          strokeWidth="10"
+          strokeLinecap="round"
+        />
+        <path
+          d="M164 98C178 94 194 92 208 96"
+          stroke="#5B2B82"
+          strokeWidth="10"
+          strokeLinecap="round"
+        />
+        <circle cx="48" cy="96" r="9" fill="#5B2B82" />
+        <circle cx="208" cy="96" r="9" fill="#5B2B82" />
+        <circle cx="74" cy="70" r="10" fill="#6FA57A" />
+        <circle cx="182" cy="70" r="10" fill="#6FA57A" />
+        <circle cx="128" cy="198" r="10" fill="#6FA57A" />
+        <path
+          d="M154 128C154 114 142 104 128 104C114 104 102 114 102 128C102 142 114 152 128 152"
+          stroke="#5B2B82"
+          strokeWidth="10"
+          strokeLinecap="round"
+        />
       </g>
     </svg>
   );
