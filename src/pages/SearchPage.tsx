@@ -48,13 +48,6 @@ export default function SearchPage() {
     setSearchHistory(getSearchHistory());
   }, []);
 
-  // Debug: Log seedTracks on mount
-  useEffect(() => {
-    console.log('🔍 SearchPage mounted');
-    console.log('📊 seedTracks count:', seedTracks.length);
-    console.log('📦 First track:', seedTracks[0]);
-  }, []);
-
   // Debounced Spotify search
   useEffect(() => {
     if (searchMode !== 'song' || !query.trim() || !user || !isSpotifyConnected) {

@@ -43,7 +43,7 @@ export function AudioPreview({
     if (!isActive && isPlaying) {
       handlePause();
     }
-  }, [isActive]);
+  }, [isActive, isPlaying, handlePause]);
 
   // Cleanup on unmount
   useEffect(() => {
